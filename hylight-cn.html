@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<!--
+  MAIN / LANDING PAGE for Hylight Media's B2B services site (separate from the
+  Horizon band fan site). Rename to index.html on GitHub if you want this to
+  load by default at this site's root. Language switcher links to:
+    - hylight-tc.html (繁體中文)
+    - hylight-en.html (English)
+-->
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HYLIGHT MEDIA | 简体中文</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Noto+Sans+SC:wght@400;500;700;900&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#0A0A0A;
+    --panel:#141414;
+    --panel-2:#1C1C1C;
+    --gold:#D4AF37;
+    --gold-bright:#F2CD6B;
+    --ink:#F5F3EE;
+    --ink-dim:#A9A398;
+    --line: rgba(245,243,238,0.12);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--void);color:var(--ink);
+    font-family:'Inter','Noto Sans SC',sans-serif;
+    overflow-x:hidden;
+  }
+  a{color:inherit;text-decoration:none;}
+  ul{list-style:none;}
+  img{display:block;max-width:100%;}
+  ::selection{background:var(--gold);color:var(--void);}
+
+  .display{font-family:'Big Shoulders Display','Noto Sans SC',sans-serif;font-weight:800;letter-spacing:0.01em;}
+  .mono{font-family:'Space Mono',monospace;}
+
+  /* signature: diagonal gold beam lines, echoing the Hylight card texture */
+  .beams{
+    position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;
+  }
+  .beams::before, .beams::after{
+    content:'';position:absolute;top:-10%;bottom:-10%;width:1px;
+    background:linear-gradient(180deg, transparent, rgba(212,175,55,0.35) 30%, rgba(212,175,55,0.12) 70%, transparent);
+    transform:rotate(8deg);
+  }
+  .beams::before{left:22%;}
+  .beams::after{left:58%;transform:rotate(-6deg);}
+
+  /* ============ LANG BAR ============ */
+  .lang-bar{
+    position:fixed;top:0;left:0;right:0;z-index:1000;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:16px 5vw;backdrop-filter:blur(10px);
+    background:rgba(10,10,10,0.75);border-bottom:1px solid var(--line);
+    font-family:'Space Mono',monospace;font-size:0.76rem;
+  }
+  .lang-bar .brand{display:flex;align-items:center;gap:10px;}
+  .lang-bar .brand img{width:20px;height:20px;border-radius:4px;object-fit:cover;}
+  .lang-bar .brand span{font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:1.05rem;letter-spacing:0.04em;}
+  .lang-links{display:flex;gap:16px;align-items:center;}
+  .lang-links a{color:var(--ink-dim);padding:6px 10px;border-radius:999px;border:1px solid transparent;transition:all .2s;}
+  .lang-links a:hover{color:var(--gold-bright);border-color:var(--line);}
+  .lang-links .current{color:var(--void);background:var(--gold);font-weight:700;padding:6px 12px;border-radius:999px;}
+
+  /* ============ HERO ============ */
+  .hero{
+    position:relative;min-height:100vh;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;text-align:center;
+    padding:120px 5vw 60px;overflow:hidden;
+  }
+  .hero-content{position:relative;z-index:2;max-width:920px;}
+  .logo-mark{width:56px;height:56px;margin:0 auto 26px;display:block;border-radius:8px;object-fit:cover;}
+  .eyebrow{
+    font-family:'Space Mono',monospace;font-size:0.75rem;letter-spacing:0.32em;
+    color:var(--gold);display:inline-block;margin-bottom:22px;
+  }
+  .hero h1{font-size:clamp(2.6rem,7.5vw,5.2rem);line-height:1.1;}
+  .hero h1 .accent{color:var(--gold);}
+  .hero-tag{max-width:640px;margin:28px auto 0;color:var(--ink-dim);font-size:1.05rem;line-height:1.9;}
+  .scroll-cue{
+    position:absolute;bottom:30px;left:50%;transform:translateX(-50%);z-index:2;
+    font-family:'Space Mono',monospace;font-size:0.68rem;letter-spacing:0.3em;color:var(--ink-dim);
+    display:flex;flex-direction:column;align-items:center;gap:10px;
+  }
+  .scroll-cue .bar{width:1px;height:32px;background:linear-gradient(var(--gold), transparent);animation:pulse 1.8s infinite;}
+  @keyframes pulse{0%,100%{opacity:0.25;}50%{opacity:1;}}
+
+  section{position:relative;padding:100px 5vw;}
+  .section-head{max-width:760px;margin:0 auto 56px;text-align:center;}
+  .section-head .eyebrow{color:var(--gold);}
+  .section-head h2{font-size:clamp(2rem,4.6vw,3.1rem);margin-top:12px;}
+  .section-head p{color:var(--ink-dim);margin-top:16px;font-size:1.02rem;line-height:1.8;}
+
+  /* ============ CAPABILITY STRIP ============ */
+  .capability{background:var(--panel);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .cap-row{
+    max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:16px;justify-content:center;
+  }
+  .cap-chip{
+    display:flex;align-items:center;gap:10px;padding:14px 22px;border-radius:999px;
+    border:1px solid var(--line);background:var(--panel-2);font-size:0.95rem;
+  }
+  .cap-chip svg{width:20px;height:20px;flex-shrink:0;}
+  .cap-chip .plus{color:var(--gold);font-family:'Space Mono',monospace;}
+
+  /* ============ CASE STUDIES ============ */
+  .cases{background:var(--void);}
+  .case{
+    max-width:1160px;margin:0 auto 100px;display:grid;grid-template-columns:1fr 1fr;
+    gap:60px;align-items:center;
+  }
+  .case:last-child{margin-bottom:0;}
+  .case.reverse .case-media{order:2;}
+  .case.reverse .case-body{order:1;}
+  @media (max-width:900px){
+    .case, .case.reverse{grid-template-columns:1fr;}
+    .case.reverse .case-media, .case.reverse .case-body{order:initial;}
+  }
+  .case-media{
+    position:relative;border-radius:6px;overflow:hidden;border:1px solid var(--line);
+    aspect-ratio:4/3;background:var(--panel);
+  }
+  .case-media img{width:100%;height:100%;object-fit:cover;}
+  .case-media.icon-only{display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 30% 25%,#1e1a10,var(--panel) 70%);}
+  .case-media.icon-only svg{width:38%;opacity:0.9;}
+  .case-tag{font-family:'Space Mono',monospace;font-size:0.72rem;letter-spacing:0.14em;color:var(--gold);}
+  .case-title{font-size:clamp(1.5rem,3vw,2rem);margin-top:10px;}
+  .case-meta{font-family:'Space Mono',monospace;font-size:0.78rem;color:var(--ink-dim);margin-top:10px;letter-spacing:0.02em;}
+  .case-body p{color:var(--ink-dim);line-height:1.85;margin-top:18px;font-size:0.98rem;}
+  .case-body .stat-line{
+    margin-top:18px;display:inline-flex;gap:10px;align-items:baseline;
+    border-left:2px solid var(--gold);padding-left:14px;
+  }
+  .case-body .stat-line b{font-family:'Big Shoulders Display',sans-serif;font-size:1.6rem;color:var(--gold-bright);}
+  .case-body .stat-line span{color:var(--ink-dim);font-size:0.85rem;}
+  .mini-gallery{display:flex;gap:10px;margin-top:18px;}
+  .mini-gallery img{width:50%;aspect-ratio:4/3;object-fit:cover;border-radius:4px;border:1px solid var(--line);}
+
+  /* ============ HARDWARE ============ */
+  .hardware{background:var(--panel);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .hw-mixer{
+    max-width:820px;margin:0 auto 60px;text-align:center;
+    border:1px solid var(--line);border-radius:10px;padding:40px 32px;background:var(--panel-2);
+  }
+  .hw-mixer svg{width:64px;margin:0 auto 20px;}
+  .hw-mixer h3{font-size:1.4rem;}
+  .hw-mixer p{color:var(--ink-dim);margin-top:14px;line-height:1.85;font-size:0.98rem;}
+  .hw-grid{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+  @media (max-width:760px){.hw-grid{grid-template-columns:repeat(2,1fr);}}
+  .hw-item{
+    border:1px solid var(--line);border-radius:10px;padding:26px 18px;text-align:center;background:var(--panel-2);
+  }
+  .hw-item svg{width:38px;height:38px;margin:0 auto 14px;}
+  .hw-item .name{font-weight:700;font-size:0.98rem;}
+  .hw-item .sub{font-family:'Space Mono',monospace;font-size:0.68rem;color:var(--ink-dim);margin-top:5px;letter-spacing:0.04em;}
+
+  /* ============ CONTACT ============ */
+  .contact{background:var(--void);text-align:center;}
+  .contact .logo-mark{width:48px;height:48px;display:block;margin:0 auto;border-radius:6px;object-fit:cover;}
+  .contact h2{font-size:clamp(1.8rem,4vw,2.6rem);margin-top:20px;}
+  .contact p{color:var(--ink-dim);max-width:560px;margin:18px auto 0;line-height:1.85;}
+  .contact-grid{
+    max-width:600px;margin:40px auto 0;display:flex;flex-direction:column;gap:14px;
+  }
+  .contact-item{
+    display:flex;align-items:center;gap:20px;text-align:left;
+    border:1px solid var(--line);border-radius:10px;padding:18px 24px;background:var(--panel);
+  }
+  .contact-item .label{
+    flex:0 0 auto;min-width:80px;font-family:'Space Mono',monospace;font-size:0.68rem;color:var(--gold);letter-spacing:0.1em;
+  }
+  .contact-item .value{flex:1;min-width:0;font-size:clamp(0.82rem,2.2vw,0.92rem);color:var(--ink-dim);line-height:1.8;}
+  .contact-item .value .line{white-space:nowrap;}
+  @media (max-width:520px){
+    .contact-item{flex-direction:column;align-items:flex-start;gap:8px;}
+    .contact-item .value{width:100%;overflow-x:auto;}
+  }
+  .contact-tags{
+    margin-top:44px;display:flex;justify-content:center;gap:18px;flex-wrap:wrap;
+    font-family:'Space Mono',monospace;font-size:0.72rem;letter-spacing:0.12em;color:var(--ink-dim);
+  }
+
+  /* ============ SOCIAL QR CODES ============ */
+  .qr-section{background:var(--panel);border-top:1px solid var(--line);padding:60px 5vw;}
+  .qr-row{max-width:600px;margin:0 auto;display:flex;justify-content:center;gap:36px;flex-wrap:wrap;}
+  .qr-item{text-align:center;}
+  .qr-item img{
+    width:120px;height:120px;object-fit:cover;border-radius:10px;
+    border:1px solid var(--line);background:var(--panel-2);
+  }
+  .qr-item .qr-label{
+    margin-top:12px;font-family:'Space Mono',monospace;font-size:0.72rem;color:var(--ink-dim);letter-spacing:0.05em;
+  }
+
+  footer{padding:50px 5vw 36px;text-align:center;border-top:1px solid var(--line);}
+  footer p{color:var(--ink-dim);font-size:0.85rem;}
+  footer .fine{font-size:0.7rem;margin-top:16px;opacity:0.55;}
+</style>
+</head>
+<body>
+
+<div class="lang-bar">
+  <div class="brand">
+    <img src="hylight-logo-mark.jpg" alt="Hylight Media logo">
+    <span>HYLIGHT</span>
+  </div>
+  <div class="lang-links">
+    <span class="current">简体中文</span>
+    <a href="hylight-tc.html">繁體中文</a>
+    <a href="hylight-en.html">EN</a>
+  </div>
+</div>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="beams"></div>
+  <div class="hero-content">
+    <img class="logo-mark" src="hylight-logo-mark.jpg" alt="Hylight Media logo">
+    <span class="eyebrow">ARTIST UNION · STAGE FUSION · MUSIC PARTY</span>
+    <h1 class="display">把摇滚现场<br><span class="accent">搬进你的场地</span></h1>
+    <p class="hero-tag">无论你是否拥有舞台、灯光或专业音响系统，我们都能把一整场沉浸式摇滚音乐会，原汁原味地搬到你的场地——商场中庭、运动场馆、公司年会，或是一间还没准备好开唱的餐厅酒吧。</p>
+  </div>
+  <div class="scroll-cue">向下滑动<span class="bar"></span></div>
+</section>
+
+<!-- ============ CAPABILITY STRIP ============ -->
+<section class="capability">
+  <div class="cap-row">
+    <div class="cap-chip"><svg viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="2"><path d="M4 4h16v6H4z"/><path d="M8 10v10M16 10v10"/></svg>酒吧 · 咖啡店</div>
+    <div class="cap-chip"><span class="plus">+</span><svg viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="2"><path d="M3 21h18M5 21V9l7-5 7 5v12M9 21v-6h6v6"/></svg>商场中庭</div>
+    <div class="cap-chip"><span class="plus">+</span><svg viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 010 18a14 14 0 010-18"/></svg>运动场馆</div>
+    <div class="cap-chip"><span class="plus">+</span><svg viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="2"><path d="M3 21h18M6 21V7l6-4 6 4v14M10 21v-5h4v5"/></svg>企业活动</div>
+  </div>
+</section>
+
+<!-- ============ CASE STUDIES ============ -->
+<section class="cases">
+  <div class="section-head">
+    <span class="eyebrow mono">服务场景</span>
+    <h2 class="display">一支乐队，无数种可能</h2>
+    <p>我们的乐队活跃于酒吧与咖啡店的舞台，但真正让我们与别不同的，是我们把整套专业演出能力——乐手、乐器、扩声系统——变成一个「随处可搭建」的移动舞台。以下是我们曾经踏足过的四种不一样的现场。</p>
+  </div>
+
+  <div class="case">
+    <div class="case-media">
+      <img src="case-mall-guangzhou.jpg" alt="广州商场快闪演出现场照">
+    </div>
+    <div class="case-body">
+      <div class="case-tag">CASE 01</div>
+      <div class="case-title display">广州商场快闪演出</div>
+      <div class="case-meta">📍 广州 · 商场中庭　｜　半天快闪活动</div>
+      <p>一场半日快闪演出，为商场带来显著的人流增长。我们共派出两位主唱、一位键盘手、一位吉他手——把原本安静的中庭，变成全场驻足围观的即兴演唱会。</p>
+      <div class="stat-line"><b>半天</b><span>快闪演出<br>带动商场人流</span></div>
+    </div>
+  </div>
+
+  <div class="case reverse">
+    <div class="case-media">
+      <img src="case-pickleball-opening.jpg" alt="匹克球俱乐部开业典礼演出现场照">
+    </div>
+    <div class="case-body">
+      <div class="case-tag">CASE 02</div>
+      <div class="case-title display">匹克球俱乐部开业典礼</div>
+      <div class="case-meta">📍 运动场馆　｜　开业典礼</div>
+      <p>我们相信，运动配上摇滚，快乐值直接翻倍。乐队在开幕现场凭借即兴solo演出，把整个球馆变成一场沉浸式live house。任何来宾都欢迎走上台献唱一曲，而我们的乐手，足以把任何一首歌，现场改编成摇滚版本。</p>
+      <div class="stat-line"><b>任何歌曲</b><span>现场即兴改编<br>摇滚版本</span></div>
+    </div>
+  </div>
+
+  <div class="case">
+    <div class="case-media" style="padding:0;">
+      <div class="mini-gallery" style="margin:0;height:100%;">
+        <img src="show-ubro-onsite.jpg" alt="优布劳酒吧演出现场照">
+        <img src="show-vinylfriend-onsite.jpg" alt="胶个朋友咖啡店演出现场照">
+      </div>
+    </div>
+    <div class="case-body">
+      <div class="case-tag">CASE 03</div>
+      <div class="case-title display">没有舞台，也没关系</div>
+      <div class="case-meta">📍 酒吧 · 咖啡店 · 餐厅　｜　F&amp;B 场地实战经验</div>
+      <p>大部分的餐饮场地，从未准备好一场专业演出所需要的灯光与舞台。我们的团队会先到场勘察空间格局，找出最适合变成「舞台」的角落，再针对场地既有的灯具做现场调整——不需要额外採购整套灯光设备，也能拥有专业级的舞台氛围。这项经验，来自我们与多间酒吧、咖啡店合作的真实演出记录。</p>
+      <div class="stat-line"><b>灯光医生</b><span>免购置新灯光<br>现场调校即有设备</span></div>
+    </div>
+  </div>
+
+  <div class="case reverse">
+    <div class="case-media">
+      <img src="vinylfriend-stage.jpg" alt="灯光调校案例">
+    </div>
+    <div class="case-body">
+      <div class="case-tag">CASE 04</div>
+      <div class="case-title display">企业年会 · 品牌发布会 · 团建</div>
+      <div class="case-meta">📍 写字楼 · 酒店宴会厅 · 户外场地</div>
+      <p>公司年会、新品发布会、团建日——这些场合往往缺乏专业的舞台与扩声系统，却最需要一场能把气氛瞬间点燃的live演出。我们把整套设备与乐手带到现场，让员工与客人从「坐着鼓掌」，变成「站起来一起唱」。</p>
+      <div class="stat-line"><b>全设备</b><span>一次到场<br>免场地方额外採购</span></div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ============ HARDWARE ============ -->
+<section class="hardware">
+  <div class="section-head">
+    <span class="eyebrow mono">幕后配置</span>
+    <h2 class="display">专业级设备，稳定的现场表现</h2>
+  </div>
+
+  <div class="hw-mixer">
+    <svg viewBox="0 0 64 64" fill="none"><rect x="8" y="8" width="48" height="48" rx="6" stroke="#D4AF37" stroke-width="2"/><line x1="20" y1="16" x2="20" y2="48" stroke="#D4AF37" stroke-width="2"/><line x1="32" y1="16" x2="32" y2="48" stroke="#D4AF37" stroke-width="2"/><line x1="44" y1="16" x2="44" y2="48" stroke="#D4AF37" stroke-width="2"/><circle cx="20" cy="30" r="4" fill="#F2CD6B"/><circle cx="32" cy="38" r="4" fill="#F2CD6B"/><circle cx="44" cy="24" r="4" fill="#F2CD6B"/></svg>
+    <h3 class="display">专业调音设备</h3>
+    <p>我们配备专业调音设备，能在演出现场即时调整每件乐器与人声的音量与音色平衡。无论场地是水泥回音的商场中庭，还是布艺吸音的运动馆，我们都能在开场前快速完成现场调校，确保人声清晰、乐器有力，音乐不因场地而「翻车」。</p>
+  </div>
+
+  <div class="hw-grid">
+    <div class="hw-item">
+      <svg viewBox="0 0 40 40" fill="none"><rect x="10" y="8" width="20" height="26" rx="4" fill="none" stroke="#D4AF37" stroke-width="2"/><circle cx="20" cy="21" r="3" fill="#F2CD6B"/></svg>
+      <div class="name">木箱鼓</div><div class="sub">CAJON</div>
+    </div>
+    <div class="hw-item">
+      <svg viewBox="0 0 40 40" fill="none"><ellipse cx="20" cy="24" rx="14" ry="7" fill="none" stroke="#D4AF37" stroke-width="2"/><ellipse cx="20" cy="17" rx="14" ry="7" fill="none" stroke="#F2CD6B" stroke-width="2"/></svg>
+      <div class="name">电子鼓组</div><div class="sub">DIGITAL DRUM SET</div>
+    </div>
+    <div class="hw-item">
+      <svg viewBox="0 0 40 40" fill="none"><rect x="18" y="4" width="4" height="18" fill="#D4AF37"/><circle cx="20" cy="30" r="9" fill="none" stroke="#F2CD6B" stroke-width="2"/></svg>
+      <div class="name">贝斯</div><div class="sub">BASS</div>
+    </div>
+    <div class="hw-item">
+      <svg viewBox="0 0 40 40" fill="none"><rect x="18" y="4" width="4" height="16" fill="#D4AF37"/><circle cx="20" cy="27" r="11" fill="none" stroke="#F2CD6B" stroke-width="2"/><circle cx="20" cy="27" r="4" fill="none" stroke="#D4AF37" stroke-width="2"/></svg>
+      <div class="name">木吉他</div><div class="sub">ACOUSTIC GUITAR</div>
+    </div>
+    <div class="hw-item">
+      <svg viewBox="0 0 40 40" fill="none"><rect x="18" y="4" width="4" height="16" fill="#D4AF37"/><circle cx="20" cy="27" r="11" fill="#1e1a10" stroke="#F2CD6B" stroke-width="2"/><circle cx="20" cy="27" r="4" fill="#0A0A0A" stroke="#D4AF37" stroke-width="2"/></svg>
+      <div class="name">电吉他</div><div class="sub">ELECTRIC GUITAR</div>
+    </div>
+    <div class="hw-item">
+      <svg viewBox="0 0 40 40" fill="none"><rect x="6" y="14" width="28" height="16" rx="2" fill="none" stroke="#D4AF37" stroke-width="2"/><path d="M9 14v16M13 14v16M17 14v16M21 14v16M25 14v16M29 14v16" stroke="#F2CD6B" stroke-width="1"/></svg>
+      <div class="name">键盘</div><div class="sub">KEYBOARD</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section class="contact">
+  <img class="logo-mark" src="hylight-logo-mark.jpg" alt="Hylight Media logo">
+  <h2 class="display">让我们把现场，搬到你的场地</h2>
+  <p>无论是商场活动、运动赛事开幕、企业年会，或是一间想要办现场演出的餐厅酒吧——欢迎与我们联系，一起讨论演出方案。</p>
+  <div class="contact-grid">
+    <div class="contact-item"><div class="label">电话 PHONE</div><div class="value"><div class="line">国内：+86 13326642224</div><div class="line">澳门：+853 65589699</div></div></div>
+    <div class="contact-item"><div class="label">邮箱 EMAIL</div><div class="value"><div class="line">国内：1661082125@qq.com</div><div class="line">港澳台及海外：berni.wuye@gmail.com</div></div></div>
+  </div>
+</section>
+
+<!-- ============ SOCIAL QR CODES ============ -->
+<section class="qr-section">
+  <div class="qr-row">
+    <div class="qr-item">
+      <img src="qr-wechat.jpg" alt="微信二维码">
+      <div class="qr-label">微信 WeChat</div>
+    </div>
+    <div class="qr-item">
+      <img src="qr-xiaohongshu.jpg" alt="小红书二维码">
+      <div class="qr-label">小红书 Xiaohongshu</div>
+    </div>
+    <div class="qr-item">
+      <img src="qr-douyin.jpg" alt="抖音二维码">
+      <div class="qr-label">抖音 Douyin</div>
+    </div>
+  </div>
+  <div class="contact-tags">
+    <span>ARTIST UNION</span><span>·</span><span>STAGE FUSION</span><span>·</span><span>MUSIC PARTY</span>
+  </div>
+</section>
+
+<footer>
+  <p>HYLIGHT MEDIA · Hylight Media Zhuhai Co., Ltd.</p>
+  <p class="fine">&copy; 2026 华翼慧光文化传媒（珠海）有限公司保留所有权利</p>
+</footer>
+
+</body>
+</html>
